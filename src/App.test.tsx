@@ -1,6 +1,6 @@
-import { render, screen, fireEvent, waitFor, act, renderHook } from "@testing-library/react";
-import { useDebounce } from "use-debounce";
-import userEvent from '@testing-library/user-event';
+import { render, screen, fireEvent} from "@testing-library/react";
+//import { useDebounce } from "use-debounce";
+//import userEvent from '@testing-library/user-event';
 import App from "./App";
 
 describe("App komponenta", () => {

@@ -1,4 +1,4 @@
-import React from 'react'
+//import React from 'react'
 import { Link } from 'react-router-dom'
 import notfound from "../../assets/notfound.png"
 
@@ -7,10 +7,10 @@ type CardProps = {
     title?: string,
     original_name?:string,
     poster_path:string,
-    category:string,
+    category?:string,
 }
 
-const Card = ({id, title, poster_path, category}: CardProps ) => {
+const Card = ({id, title, poster_path, category, original_name}: CardProps ) => {
     return (
          <Link to={`${category}/${id}`} className='link'>
             <div className='result-wrapper'>

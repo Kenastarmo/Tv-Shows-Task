@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Movie } from '../../types';
 import createAxiosInstance from "../../createAxiosInstance";
 import LoaderCard from '../../components/LoaderCard/LoaderCard';
@@ -8,12 +8,12 @@ import Error from '../../components/Error/Error';
 type MoviesType = {
   popularMovies: Movie[];
   searchQuery: string;
-  category: string;
+  category?: string;
 };
 
 const Results = ({ popularMovies, searchQuery, category }: MoviesType) => {
 
-  const [movies, setMovies] = useState<object[]>(() => {
+  const [movies, setMovies] = React.useState<object[]>(() => {
     const storedData = localStorage.getItem(`${category}`);
     return storedData ? JSON.parse(storedData) : [];
   });
@@ -21,6 +21,7 @@ const Results = ({ popularMovies, searchQuery, category }: MoviesType) => {
   
   const [displayMovies, setDisplayMovies] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>();
+    /* eslint-disable @typescript-eslint/no-explicit-any */
   const [error, setError] = useState<any>();
 
 
@@ -80,13 +81,23 @@ useEffect(() => {
   // }, [movies, category]);
   
 
-  const renderResults = (movie: Movie, index:number) => {
+  // const renderResults = (movie: Movie, index:number) => {
+  //   return (
+  //     <Card key={index} 
+  //     id={movie.id} 
+  //     title={movie.title ? movie.title : movie.original_name} 
+  //     poster_path={movie.poster_path} 
+  //     category={category} />
+  //   );
+  // }
+
+  const renderResults: (value: Movie, index: number, array: Movie[]) => JSX.Element = (movie, index) => {
     return (
-      <Card key={movie.id} 
-      id={movie.id} 
-      title={movie.title ? movie.title : movie.original_name} 
-      poster_path={movie.poster_path} 
-      category={category} />
+      <Card key={index} 
+            id={movie.id} 
+            title={movie.title? movie.title : movie.original_name} 
+            poster_path={movie.poster_path} 
+            category={category} />
     );
   }
 
@@ -101,7 +112,9 @@ useEffect(() => {
         <LoaderCard />
       ) : (
         <>
-          {displayMovies ? (movies.map(renderResults)) : (popularMovies.map(renderResults))}
+          {displayMovies? (movies as Movie[]).map(renderResults) : (popularMovies as Movie[]).map(renderResults)}
+          
+          {/* {displayMovies ? (movies.map(renderResults)) : (popularMovies.map(renderResults))} */}
         </>
       )}
     </div>

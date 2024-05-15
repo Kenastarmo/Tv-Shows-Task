@@ -1,8 +1,9 @@
-import React from 'react';
+
+//import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
-import axios from 'axios'; // Importujemo axios
+//import axios from 'axios'; // Importujemo axios
 import Results from './Results';
 
 
@@ -27,22 +28,22 @@ describe('Results component', () => {
 
     const mockSearchQuery = 'Movie';
     const mockCategory = 'movie';
-    const mockSearchResults = [
-        { 
-          id: 3, 
-          title: 'Movie 3', 
-          poster_path: '/path/to/poster3.jpg',
-          overview: 'This is a brief overview of Movie 3.',
-          vote_average: 6.5
-        },
-        { 
-          id: 4, 
-          title: 'Movie 4', 
-          poster_path: '/path/to/poster4.jpg',
-          overview: 'This is a brief overview of Movie 4.',
-          vote_average: 7.0
-        },
-    ];
+    // const mockSearchResults = [
+    //     { 
+    //       id: 3, 
+    //       title: 'Movie 3', 
+    //       poster_path: '/path/to/poster3.jpg',
+    //       overview: 'This is a brief overview of Movie 3.',
+    //       vote_average: 6.5
+    //     },
+    //     { 
+    //       id: 4, 
+    //       title: 'Movie 4', 
+    //       poster_path: '/path/to/poster4.jpg',
+    //       overview: 'This is a brief overview of Movie 4.',
+    //       vote_average: 7.0
+    //     },
+    // ];
 
     it('renders popular movies when searchQuery is empty', async () => {
         render(

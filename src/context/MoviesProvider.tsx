@@ -3,7 +3,7 @@ import MoviesContext from './MoviesContext';
 
 type Movie = {
   id: number;
-  title: string;
+  title?: string;
   poster_path: string;
   overview: string;
   vote_average: number;
@@ -15,7 +15,7 @@ type MoviesProviderProps = {
 
 // export const MoviesProvider: React.FC<MoviesProviderProps> = ({ children }) => {
     export const MoviesProvider = ({ children }: MoviesProviderProps) => {
-  const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
+      const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
 
   return (
     <MoviesContext.Provider value={{ popularMovies, setPopularMovies }}>

@@ -18,8 +18,10 @@ function App() {
 
 
   const [loading, setLoading] = useState<boolean>(false);
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [error, setError] = useState<any>();
 
+  console.log(loading, error);
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const onInput = (e: any) => {
