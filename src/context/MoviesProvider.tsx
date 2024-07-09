@@ -1,24 +1,36 @@
 import React, { useState } from 'react';
 import MoviesContext from './MoviesContext';
+import { Movie } from '../types';
 
-type Movie = {
-  id: number;
-  title?: string;
-  poster_path: string;
-  overview: string;
-  vote_average: number;
-};
+
+// type Movie = {
+//   id: number;
+//   title?: string;
+//   poster_path: string;
+//   overview: string;
+//   vote_average: number;
+// };
+
+
 
 type MoviesProviderProps = {
   children: React.ReactNode;
 };
 
-// export const MoviesProvider: React.FC<MoviesProviderProps> = ({ children }) => {
     export const MoviesProvider = ({ children }: MoviesProviderProps) => {
+
+      //State
       const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
+      const [movies, setMovies] = useState<Movie[]>([]);
+      const [popularTvShows, setPopularTvShows] = useState<Movie[]>([]); 
+      const [tvShows, setTvShows] = useState<Movie[]>([]); 
+      const [category, setCategory] = useState<'movie' | 'tv'>('movie'); 
+      const [searchTerm, setSearchTerm] = useState<string>(''); 
+
 
   return (
-    <MoviesContext.Provider value={{ popularMovies, setPopularMovies }}>
+    <MoviesContext.Provider value={{ popularMovies, setPopularMovies, movies, setMovies, popularTvShows, setPopularTvShows,
+     tvShows, setTvShows, category, setCategory, searchTerm, setSearchTerm }}>
       {children}
     </MoviesContext.Provider>
   );

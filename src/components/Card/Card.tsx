@@ -10,7 +10,7 @@ type CardProps = {
     category?:string,
 }
 
-const Card = ({id, title, poster_path, category, original_name}: CardProps ) => {
+const Card = ({ id, title, poster_path, category, original_name }: CardProps ) => {
     return (
          <Link to={`${category}/${id}`} className='link'>
             <div className='result-wrapper'>

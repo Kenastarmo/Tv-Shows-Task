@@ -1,134 +1,85 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useContext, Dispatch, SetStateAction } from 'react';
 import { Movie } from '../../types';
 import createAxiosInstance from "../../createAxiosInstance";
+import fetchMoviesTvShows from "../../api/MoviesTvShows";
 import LoaderCard from '../../components/LoaderCard/LoaderCard';
 import Card from '../../components/Card/Card';
 import Error from '../../components/Error/Error';
+import useFetch from '../../hooks/useFetch';
+import notfound from "../../assets/notfound.png"
+import { MoviesProvider } from '../../context/MoviesProvider';
+import MoviesTvShows from '../../api/MoviesTvShows';
+import MoviesContext from '../../context/MoviesContext';
+import { loadConfigFromFile } from 'vite';
 
-type MoviesType = {
-  popularMovies: Movie[];
+type ResultsType = {
+  currentCategory: Movie[];
   searchQuery: string;
-  category?: string;
+  category: string;
+  searchTerm: string;
+  setSearchTerm: Dispatch<SetStateAction<string>>;
 };
 
-const Results = ({ popularMovies, searchQuery, category }: MoviesType) => {
+const Results = ({ currentCategory, searchQuery, category, searchTerm, setSearchTerm }: ResultsType) => {
 
-  const [movies, setMovies] = React.useState<object[]>(() => {
-    const storedData = localStorage.getItem(`${category}`);
-    return storedData ? JSON.parse(storedData) : [];
-  });
-  console.log(movies)
-  
-  const [displayMovies, setDisplayMovies] = useState<boolean>(true);
-  const [loading, setLoading] = useState<boolean>();
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-  const [error, setError] = useState<any>();
-
-
+  const { movies, setMovies, tvShows, setTvShows } = useContext(MoviesContext);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [display, setDisplay] = useState<boolean>(false);
 
   useEffect(() => {
+
     if (searchQuery.length > 2) {
-      const url = `search/${category}?query=${searchQuery}&api_key=50f34a5a024fe46d03c9989497275a4a`;
-      const fetchData = async () => {
+      
+      const fetchQuery = async () => {
+        
         try {
           setLoading(true);
-          const response = await createAxiosInstance.get(url);
-          // setMovies((prev:any) => [...prev, ...response.data.results]);
-          console.log(response.data.results)
-          setMovies(response.data.results)
+          const response = await MoviesTvShows.getMoviesTvShowsOnQuery(category, searchQuery);
+          console.log(response)
+          if (category === 'movie') {
+            setMovies(response)
+          } else {
+            setTvShows(response)
+          }
         } catch (error) {
-          setError(error);
-          console.log(error)
-        } finally {
+          console.error(`Failed to fetch Popular ${category}s`)
+        } finally{
           setLoading(false);
         }
-      };
-      fetchData();
-    }else {
-      setDisplayMovies(false); 
-       // setMovies([])
-      
-      
+
+        setDisplay(true);
+      }
+      fetchQuery();
     }
-  }, [searchQuery, category]);
- // console.log(movies)
+    else {
 
- const updateDisplayMovies = () => {
-  if (movies.length === 0){
-    //if(!localStorage.getItem(`${category}`)) {
-    setDisplayMovies(false);
-  } else {
-    setDisplayMovies(true);
-  }
-}
+      setDisplay(false)
 
-useEffect(()=>{
-  if(!localStorage.getItem(`${category}`)) {
-    setMovies([]);
-  }
-}, [category])
+    }
 
-useEffect(() => {
-  updateDisplayMovies();
-}, [movies, popularMovies, category]);
+  }, [searchQuery, category])
 
-
-
-
-  // useEffect(() => {
-  //   localStorage.setItem(`${category}`, JSON.stringify(movies));
-
-  // }, [movies, category]);
-  
-
-  // const renderResults = (movie: Movie, index:number) => {
-  //   return (
-  //     <Card key={index} 
-  //     id={movie.id} 
-  //     title={movie.title ? movie.title : movie.original_name} 
-  //     poster_path={movie.poster_path} 
-  //     category={category} />
-  //   );
-  // }
-
-  const renderResults: (value: Movie, index: number, array: Movie[]) => JSX.Element = (movie, index) => {
-    return (
-      <Card key={index} 
-            id={movie.id} 
-            title={movie.title? movie.title : movie.original_name} 
-            poster_path={movie.poster_path} 
-            category={category} />
-    );
-  }
-
-  if(error){
-    return <Error />
-  }
+  const results = display ? (category === "movie" ? movies : tvShows) : currentCategory;
 
   return (
+
     <div className='movies-wrapper'>
-      
-      {loading ? (
-        <LoaderCard />
-      ) : (
-        <>
-          {displayMovies? (movies as Movie[]).map(renderResults) : (popularMovies as Movie[]).map(renderResults)}
-          
-          {/* {displayMovies ? (movies.map(renderResults)) : (popularMovies.map(renderResults))} */}
-        </>
-      )}
+      {loading ? 
+      <LoaderCard /> 
+      : 
+      (results.map((movie: Movie, index: number) => {
+        return (
+          <Card key={index}
+            id={movie.id}
+            title={movie.title ? movie.title : movie.original_name}
+            poster_path={movie.poster_path}
+            category={category}
+          />
+        )
+      }))}
+
     </div>
   );
 };
 
 export default Results;
-
-
-
-
-
-
-
-
-
-

@@ -9,16 +9,16 @@ const LoaderCard = () => {
                         className='skeleton' 
                         height={300} 
                         width={200} 
-                        highlightColor={"#f5f5f5"} 
+                        highlightColor={ "#f5f5f5" } 
                         enableAnimation={true} 
-                        style={{backgroundColor:"#4d4d4d"}}
+                        style={{ backgroundColor:"#4d4d4d" }}
                     />
                     <Skeleton 
                         className='skeleton' 
                         height={12} 
-                        highlightColor={"#f5f5f5"} 
+                        highlightColor={ "#f5f5f5" } 
                         enableAnimation={true} 
-                        style={{backgroundColor:"#4d4d4d"}}
+                        style={{ backgroundColor:"#4d4d4d" }}
                     />
                 </div>
             ))}

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
-import createAxiosInstance from "../../createAxiosInstance"
+//import createAxiosInstance from "../../createAxiosInstance"
 import { useNavigate } from 'react-router-dom';
 import Loader from '../../components/Loader/Loader';
+import MoviesTvShows from "../../api/MoviesTvShows";
+import LoaderCard from "../../components/LoaderCard/LoaderCard";
 
 // type DetailsProps = {
 //   id: number;
@@ -13,7 +15,7 @@ import Loader from '../../components/Loader/Loader';
 // }
 
 const Details = () => {
-  const [data, setData] = React.useState<object>({})
+  const [data, setData] = useState<object>({})
   const [loading, setLoading] = useState<boolean>(false)
     /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -22,7 +24,6 @@ const Details = () => {
   if(error){
     console.log(error)
   }
-
 
   const { category, id } = useParams();
 
@@ -33,13 +34,11 @@ const Details = () => {
   }
 
   useEffect(() => {
-    const url = `${category}/${id}?api_key=50f34a5a024fe46d03c9989497275a4a`;
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await createAxiosInstance.get(url);
-        setData(response.data)
-        console.log(response)
+        const response = await MoviesTvShows.getOneMovieTvShow(category, id);
+        setData(response)
       } catch (error) {
         setError(error);
       } finally {
@@ -47,7 +46,6 @@ const Details = () => {
       }
     };
     fetchData();
-
 
   }, []);
 
@@ -64,6 +62,8 @@ const Details = () => {
   return (
 
     <div className='details-main-wrapper' style={backgroundStyle}>
+
+      
       {loading ? <Loader /> :
         <div className='details-wrapper'>
         <div className='top'>
@@ -74,7 +74,6 @@ const Details = () => {
             <img src={`https://image.tmdb.org/t/p/original/${(data as { backdrop_path: string }).backdrop_path}`} style={{ maxWidth: "600px" }}></img>
           </div>
           <div className='right'>
-            {/* <h2 className='details-title'>{data.original_title ? data.original_title : data.original_name}</h2> */}
             <h2 className='details-title'>{(data as { original_title: string }).original_title ? 
             (data as { original_title: string }).original_title : 
             (data as { original_name: string }).original_name}</h2>
