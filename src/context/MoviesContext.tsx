@@ -17,6 +17,9 @@ type MoviesContextType = {
 
   searchTerm: string;
   setSearchTerm: Dispatch<SetStateAction<string>>;
+
+  page: number;
+  setPage: Dispatch<SetStateAction<number>>;
 };
 
 const MoviesContext = createContext<MoviesContextType>({
@@ -32,6 +35,8 @@ const MoviesContext = createContext<MoviesContextType>({
   setCategory: () => { },
   searchTerm: "",
   setSearchTerm: () => { },
+  page: 1,
+  setPage: () => { },
 });
 
 export default MoviesContext;

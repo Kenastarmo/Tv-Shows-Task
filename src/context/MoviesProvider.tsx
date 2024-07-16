@@ -26,11 +26,12 @@ type MoviesProviderProps = {
       const [tvShows, setTvShows] = useState<Movie[]>([]); 
       const [category, setCategory] = useState<'movie' | 'tv'>('movie'); 
       const [searchTerm, setSearchTerm] = useState<string>(''); 
+      const [page, setPage] = useState<number>(1); 
 
 
   return (
     <MoviesContext.Provider value={{ popularMovies, setPopularMovies, movies, setMovies, popularTvShows, setPopularTvShows,
-     tvShows, setTvShows, category, setCategory, searchTerm, setSearchTerm }}>
+     tvShows, setTvShows, category, setCategory, searchTerm, setSearchTerm, page, setPage }}>
       {children}
     </MoviesContext.Provider>
   );
