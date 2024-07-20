@@ -13,11 +13,9 @@ function Home() {
   tvShows, setTvShows, category, setCategory, searchTerm, setSearchTerm, page, setPage } = useContext(MoviesContext);
   const [handlerEmptyArray, setHandlerEmptyArray] = useState<boolean>(true);
   const [searchQuery] = useDebounce(searchTerm, 1000);
-  // const [page, setPage] = useState<number | undefined>();
   console.log(page)
 
 
-  //const [category, setCategory] = useState<string>("");
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const onInput = (e: any) => {
@@ -40,35 +38,24 @@ function Home() {
         }
   }
 
-console.log(" RE RENDRED -------")
 
-// const filteringData = (oldData: any[], newData: any[]) => {
-//   const oldDataIds = new Set(oldData.map(item => item.id));
-//   return newData.filter(item => !oldDataIds.has(item.id))
-
-// }
 const filteringData = (oldData: any[], newData: any[]) => {
   const oldDataIds = new Set(oldData.map(item => item.id))
   return newData.filter(item => !oldDataIds.has(item.id))
 }
 
 useEffect(() => {
-  //setPage(1);
   
   const FetchOnmount = async () => {
     if(handlerEmptyArray){
       try {
         const response = await MoviesTvShows.getPopularMoviesTvShows(category, page)
         if(category === 'movie'){
-          // setPopularMovies( prev => [...new Set([...prev, ...response])] );
           setPopularMovies( prev => [...prev , ...filteringData(prev, response)] );
 
-          //setPopularMovies(response);
         }else{
-          //setPopularTvShows( prev => [...new Set([...prev, ...response])] );
           setPopularTvShows( prev => [...prev , ...filteringData(prev, response)] );
 
-          //setPopularTvShows(response);
         }
         
       } catch (error) {
@@ -82,7 +69,6 @@ useEffect(() => {
 }, [category, page])
 
 
-//console.log(popularMovies)
 
 //Handler for category
   const handleCategory = (category: any) => {
